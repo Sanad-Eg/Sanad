@@ -43,3 +43,13 @@ app.*.map.json
 /android/app/debug
 /android/app/profile
 /android/app/release
+
+# Custom Backend
+backend/node_modules/
+backend/serviceAccountKey.json
+
+# Production Credentials and Secrets exclusion
+*.log
+android/app/google-services.json
+ios/Runner/GoogleService-Info.plist
+
