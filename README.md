@@ -65,6 +65,7 @@ lib/
 **Mohamed Abdelemam**  
 **Ali Abdelkader**  
 **Sefen Mahrous**  
-*Mobile Application Developer*  
+
+*Mobile Application Developers*  
 
 Feel free to explore the repository, run the application, or reach out for inquiries regarding the architecture or implementation details.
