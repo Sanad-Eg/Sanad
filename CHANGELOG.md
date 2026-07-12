@@ -2,6 +2,24 @@
 
 All notable changes to this project will be documented in this file.
 
+## [2026-07-12] - Sync Master Documentation with Codebase (Task 115)
+
+### Changed
+- Synced `SANAD_MASTER_DOCUMENTATION.md` with the actual codebase using the changelog history as the source of truth.
+- Removed all references to unimplemented or removed features: Medical Vault, Live GPS Map Tracking, Global Chat Tab, Firebase Cloud Functions, Firebase Storage, multi-step booking location/task/summary screens, Helper Schedule/Earnings screens, and external payment gateways.
+- Updated Tech Stack section to reflect ImgBB API (instead of Firebase Storage) and the custom Node.js/Vercel FCM backend.
+- Corrected Folder Structure to match actual `lib/features/` directory contents.
+- Rewrote Features & Screens tables to list only implemented screens with their actual routes.
+- Clarified session-based chat behavior: accessible only from `BookingDetailsScreen` during active statuses; no global Chat tab in bottom navigation.
+- Clarified status-triggered progress tracking: all transitions driven by explicit user actions in `BookingDetailsScreen` — no CRON jobs or Cloud Functions.
+- Replaced the "Progress Tracker" section (all 🔴 Not Started) with an "Implementation Summary" reflecting the actual completed state.
+- Updated Data Models to remove `MedicalDocumentEntity`, `ScheduleSlotEntity`, `EarningsEntity`, and obsolete entity fields (distanceInKm, isOnline, location GeoPoint).
+- Updated Firebase Schema to remove `medical_documents` and `schedule_slots` collections and add `agreedPrice`, `isRated`, `clientName`, `helperName` to the bookings schema.
+- Updated Navigation Map to reflect the 3-tab shells (Home/Bookings/Profile) and removed all removed routes.
+- Updated Known Decisions & Rationale to document ImgBB, Vercel/Node.js, and session-based chat decisions.
+
+---
+
 ## [2026-07-12] - Final Repository Cleanup and README Generation (Task 114)
 
 ### Changed
