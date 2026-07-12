@@ -1,0 +1,20 @@
+rules_version = '2';
+service firebase.storage {
+  match /b/{bucket}/o {
+
+    // Helper: Checks if user is authenticated
+    function isAuthenticated() {
+      return request.auth != null;
+    }
+
+    // Rules for user profile/document assets
+    match /users/{userId}/{allPaths=**} {
+      allow read, write: if isAuthenticated() && request.auth.uid == userId;
+    }
+
+    // Rules for medical vault files
+    match /medical_vault/{clientId}/{allPaths=**} {
+      allow read, write: if isAuthenticated() && request.auth.uid == clientId;
+    }
+  }
+}

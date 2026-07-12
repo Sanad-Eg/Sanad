@@ -1,0 +1,63 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // Helper: Checks if the user is authenticated
+    function isAuthenticated() {
+      return request.auth != null;
+    }
+
+    // Helper: Checks if the user is an administrator
+    function isAdmin() {
+      return isAuthenticated() && 
+        get(/databases/$(database)/documents/users/$(request.auth.uid)).data.role == 'admin';
+    }
+
+    // Rules for users collection
+    match /users/{userId} {
+      allow read, write: if isAdmin();
+      
+      // User can read and write their own profile
+      allow read, write: if isAuthenticated() && request.auth.uid == userId;
+      
+      // Public can read verified helpers
+      allow read: if resource.data.role == 'helper' && resource.data.verificationStatus == 'verified';
+    }
+
+    // Rules for bookings collection
+    match /bookings/{bookingId} {
+      allow read, write: if isAdmin();
+
+      // Only clients involved can create a booking
+      allow create: if isAuthenticated() && request.auth.uid == request.resource.data.clientId;
+
+      // Only client or helper involved can read or update/delete
+      allow read, update, delete: if isAuthenticated() && 
+        (request.auth.uid == resource.data.clientId || request.auth.uid == resource.data.helperId);
+    }
+
+    // Rules for medical_documents collection
+    match /medical_documents/{docId} {
+      allow read, write: if isAdmin();
+
+      allow create: if isAuthenticated() && request.auth.uid == request.resource.data.clientId;
+      allow read, update, delete: if isAuthenticated() && request.auth.uid == resource.data.clientId;
+    }
+
+    // Rules for emergency_contacts collection
+    match /emergency_contacts/{contactId} {
+      allow read, write: if isAdmin();
+
+      allow create: if isAuthenticated() && request.auth.uid == request.resource.data.clientId;
+      allow read, update, delete: if isAuthenticated() && request.auth.uid == resource.data.clientId;
+    }
+
+    // Rules for notifications collection
+    match /notifications/{notificationId} {
+      allow read, write: if isAdmin();
+
+      allow create: if isAuthenticated() && request.auth.uid == request.resource.data.userId;
+      allow read, update, delete: if isAuthenticated() && request.auth.uid == resource.data.userId;
+    }
+  }
+}
